@@ -13,8 +13,7 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Lora', serif;
-      background:#fff;
-      color:#000;
+      background:#fff; color:#000;
       padding:20px;
     }
     h1 {
@@ -22,7 +21,7 @@
       margin-bottom:30px;
       font-size:2em;
     }
-    /* Botão sacola fixo */
+    /* Botão Sacola */
     #floatingSacola {
       position:fixed; top:20px; right:20px;
       background:#007BFF; color:#fff;
@@ -35,18 +34,15 @@
     }
     #floatingSacola:hover { background:#0056b3; }
 
-    /* Seção família */
-    .family-section {
-      margin-bottom:40px;
-    }
+    /* Seção Família */
+    .family-section { margin-bottom:40px; }
     .family-title {
-      font-size:1.5em;
-      font-weight:bold;
+      font-size:1.5em; font-weight:bold;
       margin-bottom:15px;
     }
     .family-content {
       display:flex;
-      align-items:center;  /* desktop: imagem e tabela alinhadas no meio vertical */
+      align-items:center;  /* desktop: alinhamento vertical */
       gap:20px;
       overflow-x:auto;
     }
@@ -56,17 +52,14 @@
       border-radius:8px;
     }
     table {
-      width:100%;
-      border-collapse:collapse;
+      width:100%; border-collapse:collapse;
     }
     th, td {
-      padding:8px;
-      text-align:left;
+      padding:8px; text-align:left;
       border-bottom:1px solid #ddd;
     }
     input.product-qty {
-      width:60px;
-      padding:4px;
+      width:60px; padding:4px;
       text-align:center;
     }
     button.add-to-cart {
@@ -80,39 +73,36 @@
     }
     button.add-to-cart:hover { background:#0056b3; }
 
-    /* ======== Ajustes para smartphones (<=600px) ======== */
+    /* Ícone verde quando em carrinho */
+    button.add-to-cart.in-cart {
+      background:#28a745;
+    }
+    button.add-to-cart.in-cart i {
+      color:#fff;
+    }
+
+    /* ===== Responsivo <=600px ===== */
     @media (max-width: 600px) {
       .family-content {
-        flex-direction: column;  /* empilha imagem acima da tabela */
+        flex-direction: column;
         align-items: flex-start;
       }
       .family-image {
-        width: 100%;            /* ocupa toda largura disponível */
-        max-width: 300px;
+        width:100%; max-width:300px;
       }
-      table {
-        font-size: 0.9em;
-      }
-      th, td {
-        padding:6px;
-      }
-      input.product-qty {
-        width:50px;
-      }
-      button.add-to-cart {
-        padding:5px 8px;
-      }
+      table { font-size:0.9em; }
+      th, td { padding:6px; }
+      input.product-qty { width:50px; }
+      button.add-to-cart { padding:5px 8px; }
     }
-    /* Pequenos ajustes extra para telas muito estreitas (<=480px) */
+    /* Ajuste extra <=480px */
     @media (max-width: 480px) {
       h1 { font-size:1.5em; }
       #floatingSacola {
         padding:8px 12px;
         font-size:0.9em;
       }
-      .family-title {
-        font-size:1.3em;
-      }
+      .family-title { font-size:1.3em; }
     }
   </style>
 </head>
@@ -125,15 +115,126 @@
   <div id="catalog"></div>
 
   <script>
+    // Cada produto tem agora preço individual
     const families = [
-      { title:'ANILHA SPORT PINTADA',       image:'images/ANILHA_SPORT_PINTADA.jpg',       weights:[1,2,3,4,5,10,15,20,25], priceFlat:10.00 },
-      { title:'ANILHA SPORT EMBORRACHADA',  image:'images/ANILHA_SPORT_EMBORRACHADA.jpg',  weights:[1,2,3,4,5,10,15,20,25], priceFlat:12.00 },
-      { title:'ANILHA VAZADA EMBORRACHADA', image:'images/ANILHA_VAZADA_EMBORRACHADA.jpg', weights:[1,2,3,4,5,10,15,20,25], priceFlat:12.00 },
-      { title:'ANILHA VAZADA PINTADA',      image:'images/ANILHA_VAZADA_PINTADA.jpg',      weights:[1,2,3,4,5,10,15,20,25], priceFlat:12.00 },
-      { title:'KETTLEBELL PINTADO',         image:'images/KETTLEBELL_PINTADO.jpg',         weights:[4,6,8,10,12,14,16,18,20,22,24], pricePerKg:5.00 },
-      { title:'KETTLEBELL EMBORRACHADO',     image:'images/KETTLEBELL_EMBORRACHADO.jpg',     weights:[4,6,8,10,12,14,16,18,20,22,24], pricePerKg:5.00 },
-      { title:'KETTLEBELL EMB. PEGADA PINTADA', image:'images/KETTLEBELL_EMBORRACHADO_PINTADA.jpg', weights:[4,6,8,10,12,14,16,18,20,22,24], pricePerKg:5.00 },
-      { title:'TIJOLINHO 5KG',              image:'images/TIJOLINHO_5KG.jpg',              weights:[5], priceFlat:8.00 }
+      {
+        title: 'ANILHA SPORT PINTADA',
+        image: 'images/ANILHA_SPORT_PINTADA.jpg',
+        products: [
+          { weight: 1, price: 10.00 },
+          { weight: 2, price: 12.00 },
+          { weight: 3, price: 14.00 },
+          { weight: 4, price: 16.00 },
+          { weight: 5, price: 18.00 },
+          { weight:10, price: 30.00 },
+          { weight:15, price: 45.00 },
+          { weight:20, price: 60.00 },
+          { weight:25, price: 75.00 }
+        ]
+      },
+      {
+        title: 'ANILHA SPORT EMBORRACHADA',
+        image: 'images/ANILHA_SPORT_EMBORRACHADA.jpg',
+        products: [
+          { weight: 1, price: 11.00 },
+          { weight: 2, price: 13.00 },
+          { weight: 3, price: 15.00 },
+          { weight: 4, price: 17.00 },
+          { weight: 5, price: 19.00 },
+          { weight:10, price: 32.00 },
+          { weight:15, price: 48.00 },
+          { weight:20, price: 64.00 },
+          { weight:25, price: 80.00 }
+        ]
+      },
+      {
+        title: 'ANILHA VAZADA EMBORRACHADA',
+        image: 'images/ANILHA_VAZADA_EMBORRACHADA.jpg',
+        products: [
+          { weight: 1, price: 12.00 },
+          { weight: 2, price: 14.00 },
+          { weight: 3, price: 16.00 },
+          { weight: 4, price: 18.00 },
+          { weight: 5, price: 20.00 },
+          { weight:10, price: 34.00 },
+          { weight:15, price: 51.00 },
+          { weight:20, price: 68.00 },
+          { weight:25, price: 85.00 }
+        ]
+      },
+      {
+        title: 'ANILHA VAZADA PINTADA',
+        image: 'images/ANILHA_VAZADA_PINTADA.jpg',
+        products: [
+          { weight: 1, price: 10.50 },
+          { weight: 2, price: 12.50 },
+          { weight: 3, price: 14.50 },
+          { weight: 4, price: 16.50 },
+          { weight: 5, price: 18.50 },
+          { weight:10, price: 31.00 },
+          { weight:15, price: 46.00 },
+          { weight:20, price: 62.00 },
+          { weight:25, price: 77.00 }
+        ]
+      },
+      {
+        title: 'KETTLEBELL PINTADO',
+        image: 'images/KETTLEBELL_PINTADO.jpg',
+        products: [
+          { weight:4, price: 20.00 },
+          { weight:6, price: 24.00 },
+          { weight:8, price: 28.00 },
+          { weight:10, price: 32.00 },
+          { weight:12, price: 36.00 },
+          { weight:14, price: 40.00 },
+          { weight:16, price: 44.00 },
+          { weight:18, price: 48.00 },
+          { weight:20, price: 52.00 },
+          { weight:22, price: 56.00 },
+          { weight:24, price: 60.00 }
+        ]
+      },
+      {
+        title: 'KETTLEBELL EMBORRACHADO',
+        image: 'images/KETTLEBELL_EMBORRACHADO.jpg',
+        products: [
+          { weight:4, price: 22.00 },
+          { weight:6, price: 26.00 },
+          { weight:8, price: 30.00 },
+          { weight:10, price: 34.00 },
+          { weight:12, price: 38.00 },
+          { weight:14, price: 42.00 },
+          { weight:16, price: 46.00 },
+          { weight:18, price: 50.00 },
+          { weight:20, price: 54.00 },
+          { weight:22, price: 58.00 },
+          { weight:24, price: 62.00 }
+        ]
+      },
+      {
+        title: 'KETTLEBELL EMBORRACHADO PEGADA PINTADA',
+        image: 'images/KETTLEBELL_EMBORRACHADO_PINTADA.jpg',
+        products: [
+          { weight:4, price: 24.00 },
+          { weight:6, price: 28.00 },
+          { weight:8, price: 32.00 },
+          { weight:10, price: 36.00 },
+          { weight:12, price: 40.00 },
+          { weight:14, price: 44.00 },
+          { weight:16, price: 48.00 },
+          { weight:18, price: 52.00 },
+          { weight:20, price: 56.00 },
+          { weight:22, price: 60.00 },
+          { weight:24, price: 64.00 }
+        ]
+      },
+      {
+        title: 'TIJOLINHO 5KG',
+        image: 'images/TIJOLINHO_5KG.jpg',
+        products: [
+          { weight:5, price: 8.00 }
+        ]
+      }
     ];
 
     const catalog = document.getElementById('catalog');
@@ -147,26 +248,27 @@
           <img src="${fam.image}" alt="${fam.title}" class="family-image">
           <table>
             <thead>
-              <tr><th>Produto</th><th>Preço</th><th>Qtd.</th><th></th></tr>
+              <tr>
+                <th>Produto</th>
+                <th>Preço</th>
+                <th>Qtd.</th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
-              ${fam.weights.map(w => {
-                const price = fam.priceFlat != null
-                  ? fam.priceFlat
-                  : fam.pricePerKg * w;
-                return `
+              ${fam.products.map(p => `
                 <tr>
-                  <td>${fam.title} ${w} KG</td>
-                  <td>R$ ${price.toFixed(2).replace('.',',')}</td>
+                  <td>${fam.title} ${p.weight} KG</td>
+                  <td>R$ ${p.price.toFixed(2).replace('.',',')}</td>
                   <td><input type="number" min="0" value="0" class="product-qty"></td>
                   <td>
                     <button class="add-to-cart"
-                            onclick="toggleCart(this,'${fam.title} ${w} KG',${price.toFixed(2)})">
+                            onclick="toggleCart(this,'${fam.title} ${p.weight} KG',${p.price.toFixed(2)})">
                       <i class="fas fa-shopping-bag"></i>
                     </button>
                   </td>
-                </tr>`;
-              }).join('')}
+                </tr>
+              `).join('')}
             </tbody>
           </table>
         </div>`;
@@ -176,7 +278,10 @@
     function toggleCart(btn, productName, productPrice) {
       const row = btn.closest('tr');
       const qty = parseInt(row.querySelector('.product-qty').value) || 0;
-      if (qty <= 0) { alert('Selecione uma quantidade válida.'); return; }
+      if (qty <= 0) {
+        alert('Selecione uma quantidade válida.');
+        return;
+      }
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       const idx = cart.findIndex(i => i.name === productName);
       if (idx > -1) {
@@ -186,6 +291,7 @@
         cart.push({ name: productName, price: productPrice, qty, total: productPrice * qty });
       }
       localStorage.setItem('cart', JSON.stringify(cart));
+      btn.classList.add('in-cart');
       alert(`Adicionado ${qty} × ${productName} ao carrinho.`);
     }
   </script>
